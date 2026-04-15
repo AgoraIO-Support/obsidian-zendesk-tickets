@@ -6,6 +6,8 @@ import {
 import {
 	IZendeskTicket,
 	IZendeskTicketField,
+	IZendeskOrganization,
+	IZendeskOrganizationSearchResponse,
 	IZendeskSearchResponse,
 	IZendeskTicketResponse,
 } from "../interfaces/ticketInterfaces";
@@ -146,6 +148,110 @@ export class ZendeskClient {
 				sort_order: "desc",
 			}
 		);
+	}
+
+	/**
+	 * Find organization IDs matching the input term.
+	 * Matches against: org name, organization_fields.companyid, organization_fields.company_name.
+	 */
+	async findOrganizationIds(
+		account: IZendeskAccount,
+		term: string
+	): Promise<readonly number[]> {
+		this._log("Searching organizations for: %s", term);
+
+		// 1) Search by name via Zendesk search API
+		const searchResponse = await this._request<IZendeskOrganizationSearchResponse>(
+			account,
+			"/search.json",
+			{ query: `type:organization "${term}"` }
+		);
+		const byName = searchResponse.results;
+		this._log("Found %d orgs by name search", byName.length);
+
+		// 2) Check organization_fields (companyid, company_name) for those not already matched
+		//    Also do a broader search in case custom fields don't get indexed
+		const allOrgsResponse = await this._request<{ organizations: IZendeskOrganization[] }>(
+			account,
+			"/organizations/autocomplete.json",
+			{ name: term }
+		);
+		const byAutocomplete = allOrgsResponse.organizations;
+		this._log("Found %d orgs by autocomplete", byAutocomplete.length);
+
+		// Merge and deduplicate
+		const idSet = new Set<number>();
+		const lowerTerm = term.toLowerCase();
+
+		for (const org of [...byName, ...byAutocomplete]) {
+			idSet.add(org.id);
+		}
+
+		// 3) Also search all results from name search for custom field matches
+		//    For orgs returned by search, check organization_fields
+		for (const org of byName) {
+			if (org.organization_fields) {
+				const fields = org.organization_fields;
+				const companyId = String(fields.companyid ?? "").toLowerCase();
+				const companyName = String(fields.company_name ?? "").toLowerCase();
+				if (companyId.includes(lowerTerm) || companyName.includes(lowerTerm)) {
+					idSet.add(org.id);
+				}
+			}
+		}
+
+		// 4) If we got few results, do a direct search for custom field values
+		if (idSet.size === 0) {
+			this._log("No results yet, trying custom field search");
+			try {
+				const fieldSearch = await this._request<IZendeskOrganizationSearchResponse>(
+					account,
+					"/search.json",
+					{ query: `type:organization organization_fields.companyid:${term}` }
+				);
+				for (const org of fieldSearch.results) {
+					idSet.add(org.id);
+				}
+			} catch {
+				this._log("Custom field search failed, skipping");
+			}
+			try {
+				const fieldSearch2 = await this._request<IZendeskOrganizationSearchResponse>(
+					account,
+					"/search.json",
+					{ query: `type:organization organization_fields.company_name:${term}` }
+				);
+				for (const org of fieldSearch2.results) {
+					idSet.add(org.id);
+				}
+			} catch {
+				this._log("Custom field search (company_name) failed, skipping");
+			}
+		}
+
+		const ids = [...idSet];
+		this._log("Total matched org IDs: %o", ids);
+		return ids;
+	}
+
+	/**
+	 * Search tickets belonging to any of the given organization IDs.
+	 */
+	async searchTicketsByOrgIds(
+		account: IZendeskAccount,
+		orgIds: readonly number[],
+		extraQuery: string,
+		limit: number
+	): Promise<IZendeskSearchResponse> {
+		if (orgIds.length === 0) {
+			return { results: [], count: 0, next_page: null, previous_page: null };
+		}
+		// Build OR query for multiple org IDs
+		const orgFilter = orgIds.length === 1
+			? `organization_id:${orgIds[0]}`
+			: orgIds.map((id) => `organization_id:${id}`).join(" ");
+		const query = `type:ticket ${extraQuery} ${orgFilter}`;
+		return this.searchTickets(account, query, limit);
 	}
 
 	async getTicketFields(account: IZendeskAccount): Promise<readonly IZendeskTicketField[]> {

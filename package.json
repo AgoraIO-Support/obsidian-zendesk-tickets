@@ -1,6 +1,6 @@
 {
   "name": "obsidian-zendesk-tickets",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "description": "Obsidian plugin for querying and displaying Zendesk tickets",
   "main": "main.js",
   "scripts": {

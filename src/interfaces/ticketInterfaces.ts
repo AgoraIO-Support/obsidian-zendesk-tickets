@@ -51,6 +51,17 @@ export interface IZendeskTicketResponse {
 	readonly ticket: IZendeskTicket;
 }
 
+export interface IZendeskOrganization {
+	readonly id: number;
+	readonly name: string;
+	readonly organization_fields: Record<string, unknown> | null;
+}
+
+export interface IZendeskOrganizationSearchResponse {
+	readonly results: readonly IZendeskOrganization[];
+	readonly count: number;
+}
+
 export interface IZendeskTicketField {
 	readonly id: number;
 	readonly title: string;

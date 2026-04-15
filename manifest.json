@@ -1,7 +1,7 @@
 {
 	"id": "obsidian-zendesk-tickets",
 	"name": "Zendesk Tickets",
-	"version": "0.6.1",
+	"version": "0.7.0",
 	"minAppVersion": "1.0.0",
 	"description": "Query and display Zendesk tickets inline in your notes. Supports inline tags, fence blocks for search queries, and ticket detail views.",
 	"author": "Alex Ma",
