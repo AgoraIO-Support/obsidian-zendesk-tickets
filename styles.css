@@ -148,3 +148,32 @@
 .zd-account-settings h4 {
 	margin: 0 0 8px 0;
 }
+
+/* === Insert Ticket Format Radios === */
+.zendesk-format-radios {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	width: 100%;
+}
+
+.zendesk-format-option {
+	display: flex;
+	align-items: flex-start;
+	gap: 8px;
+	padding: 6px 8px;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.zendesk-format-option:hover {
+	background-color: var(--background-secondary);
+}
+
+.zendesk-format-option input[type="radio"] {
+	margin-top: 3px;
+}
+
+.zendesk-format-option small {
+	color: var(--text-muted);
+}
