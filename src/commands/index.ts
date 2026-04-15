@@ -10,6 +10,10 @@ import { createSearchByTagCommand } from "./searchByTag";
 import { createSearchByRequesterCommand } from "./searchByRequester";
 import { createClearCacheCommand } from "./clearCache";
 import { createInsertTicketLinkCommand } from "./insertTicketLink";
+import { createSnapshotByUserCommand } from "./snapshotByUser";
+import { createSnapshotNewTicketsLastWeekCommand } from "./snapshotNewTicketsLastWeek";
+import { createSnapshotByOrganizationCommand } from "./snapshotByOrganization";
+import { createSnapshotByProductCommand } from "./snapshotByProduct";
 
 export function registerCommands(plugin: ZendeskTicketsPlugin): void {
 	const commands = [
@@ -24,6 +28,10 @@ export function registerCommands(plugin: ZendeskTicketsPlugin): void {
 		createSearchByRequesterCommand(plugin),
 		createClearCacheCommand(plugin),
 		createInsertTicketLinkCommand(plugin),
+		createSnapshotByUserCommand(plugin),
+		createSnapshotNewTicketsLastWeekCommand(plugin),
+		createSnapshotByOrganizationCommand(plugin),
+		createSnapshotByProductCommand(plugin),
 	];
 
 	for (const command of commands) {

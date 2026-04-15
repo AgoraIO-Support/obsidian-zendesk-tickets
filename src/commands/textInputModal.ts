@@ -4,18 +4,21 @@ export class TextInputModal extends Modal {
 	private readonly _title: string;
 	private readonly _placeholder: string;
 	private readonly _onSubmit: (value: string) => void;
+	private readonly _defaultValue: string;
 	private _value = "";
 
 	constructor(
 		app: App,
 		title: string,
 		placeholder: string,
-		onSubmit: (value: string) => void
+		onSubmit: (value: string) => void,
+		defaultValue = "",
 	) {
 		super(app);
 		this._title = title;
 		this._placeholder = placeholder;
 		this._onSubmit = onSubmit;
+		this._defaultValue = defaultValue;
 	}
 
 	onOpen(): void {
@@ -26,6 +29,10 @@ export class TextInputModal extends Modal {
 			.setName("")
 			.addText((text) => {
 				text.setPlaceholder(this._placeholder);
+				if (this._defaultValue) {
+					text.setValue(this._defaultValue);
+					this._value = this._defaultValue;
+				}
 				text.onChange((value) => {
 					this._value = value;
 				});
