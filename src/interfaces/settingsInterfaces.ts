@@ -42,6 +42,7 @@ export interface IZendeskSettings {
 	readonly showColorBand: boolean;
 	readonly searchColumns: readonly ISearchColumn[];
 	readonly debugLogging: boolean;
+	readonly productFieldId: string;
 }
 
 export const DEFAULT_ACCOUNT: IZendeskAccount = {
@@ -71,4 +72,5 @@ export const DEFAULT_SETTINGS: IZendeskSettings = {
 		{ type: ESearchColumnType.UPDATED, compact: false },
 	],
 	debugLogging: false,
+	productFieldId: "",
 };

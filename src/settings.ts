@@ -87,6 +87,21 @@ export class ZendeskSettingTab extends PluginSettingTab {
 			);
 
 		new Setting(containerEl)
+			.setName("Product field ID")
+			.setDesc("Custom field ID for 'SDK Product (Selectable)' — used in product-based queries and snapshots")
+			.addText((text) =>
+				text
+					.setPlaceholder("e.g. 360012345678")
+					.setValue(this._plugin.settings.productFieldId)
+					.onChange(async (value) => {
+						await this._plugin.updateSettings({
+							...this._plugin.settings,
+							productFieldId: value.trim(),
+						});
+					})
+			);
+
+		new Setting(containerEl)
 			.setName("Debug logging")
 			.setDesc("Log API requests and responses to the developer console (Ctrl+Shift+I)")
 			.addToggle((toggle) =>

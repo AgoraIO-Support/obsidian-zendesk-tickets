@@ -16,13 +16,21 @@ export function createSnapshotByProductCommand(
 				return;
 			}
 
+			const fieldId = plugin.settings.productFieldId;
+			if (!fieldId) {
+				new Notice(
+					"Product field ID is not configured. Go to Settings → Zendesk Tickets → Product Field ID.",
+				);
+				return;
+			}
+
 			new TextInputModal(
 				plugin.app,
 				"Snapshot: Open Tickets by Product",
-				"Enter product name (tag)",
+				"Enter product name",
 				async (product: string) => {
 					try {
-						const query = `type:ticket status<solved tags:${product}`;
+						const query = `type:ticket status<solved custom_field_${fieldId}:${product}`;
 						const response = await plugin.client.searchTickets(
 							account,
 							query,

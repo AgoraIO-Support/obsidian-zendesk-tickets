@@ -1,14 +1,13 @@
 import { Editor } from "obsidian";
 
-export function createRecentTicketsCommand() {
+export function createAllOpenTicketsCommand() {
 	return {
-		id: "zendesk-recent-tickets",
-		name: "Recent Tickets",
+		id: "zendesk-all-open-tickets",
+		name: "All Open Tickets",
 		editorCallback: (editor: Editor) => {
 			const block = [
 				"```zendesk-search",
-				"query: type:ticket order_by:updated_at sort:desc",
-				"limit: 10",
+				"query: type:ticket status<solved order_by:updated_at sort:desc",
 				"```",
 				"",
 			].join("\n");

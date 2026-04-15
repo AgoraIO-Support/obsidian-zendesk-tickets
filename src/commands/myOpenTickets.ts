@@ -10,7 +10,6 @@ export function createMyOpenTicketsCommand(plugin: ZendeskTicketsPlugin) {
 			const block = [
 				"```zendesk-search",
 				`query: type:ticket status<solved ${assignee}`,
-				"limit: 25",
 				"```",
 				"",
 			].join("\n");

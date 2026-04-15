@@ -3,11 +3,9 @@ import { createInsertTicketCommand } from "./insertTicket";
 import { createSearchTicketsCommand } from "./searchTickets";
 import { createInsertInlineTicketCommand } from "./insertInlineTicket";
 import { createMyOpenTicketsCommand } from "./myOpenTickets";
-import { createMyPendingTicketsCommand } from "./myPendingTickets";
-import { createRecentTicketsCommand } from "./recentTickets";
+import { createAllOpenTicketsCommand } from "./recentTickets";
 import { createOpenInBrowserCommand } from "./openInBrowser";
-import { createSearchByTagCommand } from "./searchByTag";
-import { createSearchByRequesterCommand } from "./searchByRequester";
+import { createSearchByOrganizationCommand } from "./searchByRequester";
 import { createClearCacheCommand } from "./clearCache";
 import { createInsertTicketLinkCommand } from "./insertTicketLink";
 import { createSnapshotByUserCommand } from "./snapshotByUser";
@@ -21,11 +19,9 @@ export function registerCommands(plugin: ZendeskTicketsPlugin): void {
 		createSearchTicketsCommand(plugin),
 		createInsertInlineTicketCommand(plugin),
 		createMyOpenTicketsCommand(plugin),
-		createMyPendingTicketsCommand(plugin),
-		createRecentTicketsCommand(),
+		createAllOpenTicketsCommand(),
 		createOpenInBrowserCommand(plugin),
-		createSearchByTagCommand(plugin),
-		createSearchByRequesterCommand(plugin),
+		createSearchByOrganizationCommand(plugin),
 		createClearCacheCommand(plugin),
 		createInsertTicketLinkCommand(plugin),
 		createSnapshotByUserCommand(plugin),
