@@ -80,6 +80,12 @@ export default class ZendeskTicketsPlugin extends Plugin {
 		this._cache.clear();
 	}
 
+	getAssigneeQuery(): string {
+		const account = this.getAccountForQuery();
+		const username = account?.username;
+		return username ? `assignee:${username}` : "assignee:me";
+	}
+
 	private async _loadSettings(): Promise<void> {
 		const data = await this.loadData();
 		this.settings = { ...DEFAULT_SETTINGS, ...data };

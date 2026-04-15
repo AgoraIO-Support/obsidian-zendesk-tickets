@@ -159,6 +159,18 @@ export class ZendeskSettingTab extends PluginSettingTab {
 			);
 
 		new Setting(accountEl)
+			.setName("Username")
+			.setDesc("Your Zendesk display name or email — used in 'My Tickets' queries instead of 'me'")
+			.addText((text) =>
+				text
+					.setPlaceholder("john.doe@example.com")
+					.setValue(account.username)
+					.onChange(async (value) => {
+						await this._updateAccount(index, { ...account, username: value });
+					})
+			);
+
+		new Setting(accountEl)
 			.setName("Authentication type")
 			.addDropdown((dropdown) =>
 				dropdown

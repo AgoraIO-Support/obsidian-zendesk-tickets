@@ -7,6 +7,7 @@ export interface IZendeskAccount {
 	readonly alias: string;
 	readonly subdomain: string;
 	readonly authenticationType: EAuthenticationType;
+	readonly username: string;
 	readonly email: string;
 	readonly apiToken: string;
 	readonly oauthToken: string;
@@ -47,6 +48,7 @@ export const DEFAULT_ACCOUNT: IZendeskAccount = {
 	alias: "",
 	subdomain: "",
 	authenticationType: EAuthenticationType.EMAIL_TOKEN,
+	username: "",
 	email: "",
 	apiToken: "",
 	oauthToken: "",
