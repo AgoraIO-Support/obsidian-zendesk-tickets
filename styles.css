@@ -1,0 +1,150 @@
+/* === Ticket Tag (inline & fence) === */
+.zd-ticket-tag {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	padding: 2px 8px;
+	border-radius: 4px;
+	background-color: var(--background-secondary);
+	font-size: 0.9em;
+	line-height: 1.4;
+}
+
+.zd-color-band {
+	width: 3px;
+	height: 16px;
+	border-radius: 2px;
+	flex-shrink: 0;
+}
+
+.zd-status-dot {
+	display: inline-block;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	flex-shrink: 0;
+}
+
+.zd-ticket-link {
+	font-weight: 600;
+	text-decoration: none;
+	color: var(--text-accent);
+}
+
+.zd-ticket-link:hover {
+	text-decoration: underline;
+}
+
+.zd-ticket-subject {
+	color: var(--text-muted);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	max-width: 400px;
+}
+
+/* === Fence blocks === */
+.zd-ticket-fence {
+	padding: 8px 0;
+}
+
+.zd-ticket-row {
+	margin: 4px 0;
+}
+
+.zd-search-fence {
+	padding: 8px 0;
+}
+
+.zd-search-count {
+	font-size: 0.85em;
+	color: var(--text-muted);
+	margin-bottom: 8px;
+}
+
+/* === Search Table === */
+.zd-search-table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 0.9em;
+}
+
+.zd-search-table th {
+	text-align: left;
+	padding: 6px 10px;
+	border-bottom: 2px solid var(--background-modifier-border);
+	color: var(--text-muted);
+	font-weight: 600;
+	font-size: 0.85em;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+.zd-search-table td {
+	padding: 6px 10px;
+	border-bottom: 1px solid var(--background-modifier-border);
+	vertical-align: middle;
+}
+
+.zd-search-table tbody tr:hover {
+	background-color: var(--background-secondary);
+}
+
+.zd-status-badge {
+	display: inline-block;
+	padding: 1px 8px;
+	border-radius: 10px;
+	color: white;
+	font-size: 0.85em;
+	font-weight: 500;
+	text-transform: capitalize;
+}
+
+/* === Live Preview Widget === */
+.zd-inline-widget {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	padding: 1px 6px;
+	border-radius: 4px;
+	background-color: var(--background-secondary);
+	font-size: 0.9em;
+	cursor: pointer;
+}
+
+.zd-inline-resolved {
+	background-color: var(--background-secondary);
+}
+
+.zd-inline-error {
+	color: var(--text-error);
+}
+
+.zd-ticket-subject-short {
+	color: var(--text-muted);
+	font-size: 0.85em;
+}
+
+/* === States === */
+.zd-loading {
+	color: var(--text-muted);
+	font-style: italic;
+	font-size: 0.9em;
+}
+
+.zd-error {
+	color: var(--text-error);
+	font-size: 0.9em;
+}
+
+/* === Account Settings === */
+.zd-account-settings {
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 8px;
+	padding: 12px 16px;
+	margin: 12px 0;
+}
+
+.zd-account-settings h4 {
+	margin: 0 0 8px 0;
+}
