@@ -11,6 +11,7 @@ import { createTicketFenceRenderer } from "./rendering/ticketFenceRenderer";
 import { createSearchFenceRenderer } from "./rendering/searchFenceRenderer";
 import { createInlineTicketProcessor } from "./rendering/inlineTicketRenderer";
 import { createInlineTicketViewPlugin } from "./rendering/inlineTicketViewPlugin";
+import { registerCommands } from "./commands";
 
 export default class ZendeskTicketsPlugin extends Plugin {
 	settings: IZendeskSettings = DEFAULT_SETTINGS;
@@ -45,6 +46,9 @@ export default class ZendeskTicketsPlugin extends Plugin {
 		this.registerEditorExtension(
 			createInlineTicketViewPlugin(this)
 		);
+
+		// Slash commands
+		registerCommands(this);
 	}
 
 	async updateSettings(newSettings: IZendeskSettings): Promise<void> {
@@ -70,6 +74,10 @@ export default class ZendeskTicketsPlugin extends Plugin {
 				(a) => a.alias.toLowerCase() === alias.toLowerCase()
 			) || null
 		);
+	}
+
+	clearCache(): void {
+		this._cache.clear();
 	}
 
 	private async _loadSettings(): Promise<void> {
