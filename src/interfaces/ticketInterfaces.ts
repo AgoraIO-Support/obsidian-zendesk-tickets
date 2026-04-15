@@ -51,6 +51,17 @@ export interface IZendeskTicketResponse {
 	readonly ticket: IZendeskTicket;
 }
 
+export interface IZendeskTicketField {
+	readonly id: number;
+	readonly title: string;
+	readonly type: string;
+	readonly active: boolean;
+	readonly custom_field_options?: readonly {
+		readonly name: string;
+		readonly value: string;
+	}[];
+}
+
 export const STATUS_COLORS: Record<ZendeskTicketStatus, string> = {
 	new: "#5db5c4",
 	open: "#e84855",

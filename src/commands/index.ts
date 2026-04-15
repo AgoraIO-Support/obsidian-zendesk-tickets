@@ -12,6 +12,7 @@ import { createSnapshotByUserCommand } from "./snapshotByUser";
 import { createSnapshotNewTicketsLastWeekCommand } from "./snapshotNewTicketsLastWeek";
 import { createSnapshotByOrganizationCommand } from "./snapshotByOrganization";
 import { createSnapshotByProductCommand } from "./snapshotByProduct";
+import { createListTicketFieldsCommand } from "./listTicketFields";
 
 export function registerCommands(plugin: ZendeskTicketsPlugin): void {
 	const commands = [
@@ -28,6 +29,7 @@ export function registerCommands(plugin: ZendeskTicketsPlugin): void {
 		createSnapshotNewTicketsLastWeekCommand(plugin),
 		createSnapshotByOrganizationCommand(plugin),
 		createSnapshotByProductCommand(plugin),
+		createListTicketFieldsCommand(plugin),
 	];
 
 	for (const command of commands) {

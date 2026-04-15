@@ -5,6 +5,7 @@ import {
 } from "../interfaces/settingsInterfaces";
 import {
 	IZendeskTicket,
+	IZendeskTicketField,
 	IZendeskSearchResponse,
 	IZendeskTicketResponse,
 } from "../interfaces/ticketInterfaces";
@@ -145,6 +146,14 @@ export class ZendeskClient {
 				sort_order: "desc",
 			}
 		);
+	}
+
+	async getTicketFields(account: IZendeskAccount): Promise<readonly IZendeskTicketField[]> {
+		const response = await this._request<{ ticket_fields: IZendeskTicketField[] }>(
+			account,
+			"/ticket_fields.json"
+		);
+		return response.ticket_fields;
 	}
 
 	async testConnection(account: IZendeskAccount): Promise<{ ok: boolean; error?: string }> {
