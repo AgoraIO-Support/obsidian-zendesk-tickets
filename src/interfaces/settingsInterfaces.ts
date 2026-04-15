@@ -40,6 +40,7 @@ export interface IZendeskSettings {
 	readonly inlineTicketPrefix: string;
 	readonly showColorBand: boolean;
 	readonly searchColumns: readonly ISearchColumn[];
+	readonly debugLogging: boolean;
 }
 
 export const DEFAULT_ACCOUNT: IZendeskAccount = {
@@ -67,4 +68,5 @@ export const DEFAULT_SETTINGS: IZendeskSettings = {
 		{ type: ESearchColumnType.ASSIGNEE, compact: false },
 		{ type: ESearchColumnType.UPDATED, compact: false },
 	],
+	debugLogging: false,
 };

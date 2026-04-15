@@ -21,7 +21,7 @@ export default class ZendeskTicketsPlugin extends Plugin {
 		await this._loadSettings();
 
 		this._cache = new ObjectsCache(parseCacheTime(this.settings.cacheTime));
-		this.client = new ZendeskClient(this._cache);
+		this.client = new ZendeskClient(this._cache, this.settings.debugLogging);
 
 		// Settings tab
 		this.addSettingTab(new ZendeskSettingTab(this.app, this));
@@ -51,6 +51,7 @@ export default class ZendeskTicketsPlugin extends Plugin {
 		this.settings = newSettings;
 		this._cache.setTtl(parseCacheTime(newSettings.cacheTime));
 		this._cache.clear();
+		this.client = new ZendeskClient(this._cache, newSettings.debugLogging);
 		await this.saveData(newSettings);
 	}
 

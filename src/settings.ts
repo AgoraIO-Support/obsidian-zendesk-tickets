@@ -86,6 +86,20 @@ export class ZendeskSettingTab extends PluginSettingTab {
 					})
 			);
 
+		new Setting(containerEl)
+			.setName("Debug logging")
+			.setDesc("Log API requests and responses to the developer console (Ctrl+Shift+I)")
+			.addToggle((toggle) =>
+				toggle
+					.setValue(this._plugin.settings.debugLogging)
+					.onChange(async (value) => {
+						await this._plugin.updateSettings({
+							...this._plugin.settings,
+							debugLogging: value,
+						});
+					})
+			);
+
 		// --- Accounts ---
 		containerEl.createEl("h3", { text: "Accounts" });
 
@@ -208,8 +222,12 @@ export class ZendeskSettingTab extends PluginSettingTab {
 
 		buttonRow.addButton((button) =>
 			button.setButtonText("Test Connection").onClick(async () => {
-				const ok = await this._plugin.client.testConnection(account);
-				new Notice(ok ? "Connection successful!" : "Connection failed. Check your settings.");
+				const result = await this._plugin.client.testConnection(account);
+				if (result.ok) {
+					new Notice("Connection successful!");
+				} else {
+					new Notice(`Connection failed: ${result.error}`, 10000);
+				}
 			})
 		);
 
