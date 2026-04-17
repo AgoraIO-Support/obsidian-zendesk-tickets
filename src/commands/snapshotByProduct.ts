@@ -1,7 +1,7 @@
 import { Editor, Notice } from "obsidian";
 import type ZendeskTicketsPlugin from "../main";
 import { TextInputModal } from "./textInputModal";
-import { formatSnapshotTable } from "./snapshotHelper";
+import { runZendeskSnapshot } from "./snapshotCore";
 
 export function createSnapshotByProductCommand(
 	plugin: ZendeskTicketsPlugin,
@@ -16,8 +16,7 @@ export function createSnapshotByProductCommand(
 				return;
 			}
 
-			const fieldId = plugin.settings.productFieldId;
-			if (!fieldId) {
+			if (!plugin.settings.productFieldId) {
 				new Notice(
 					"Product field ID is not configured. Go to Settings → Zendesk Tickets → Product Field ID.",
 				);
@@ -30,17 +29,10 @@ export function createSnapshotByProductCommand(
 				"Enter product name",
 				async (product: string) => {
 					try {
-						const query = `type:ticket status<solved custom_field_${fieldId}:${product}`;
-						const response = await plugin.client.searchTickets(
-							account,
-							query,
-							100,
-						);
-						const markdown = formatSnapshotTable(
-							`product: ${product}`,
-							response.results,
-							account,
-							new Date(),
+						const { markdown } = await runZendeskSnapshot(
+							plugin,
+							"product",
+							product,
 						);
 						editor.replaceSelection(markdown);
 					} catch (err) {

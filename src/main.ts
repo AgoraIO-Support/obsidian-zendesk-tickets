@@ -12,6 +12,7 @@ import { createSearchFenceRenderer } from "./rendering/searchFenceRenderer";
 import { createInlineTicketProcessor } from "./rendering/inlineTicketRenderer";
 import { createInlineTicketViewPlugin } from "./rendering/inlineTicketViewPlugin";
 import { registerCommands } from "./commands";
+import { createZendeskSnapshotUriHandler } from "./commands/snapshotUriHandler";
 
 export default class ZendeskTicketsPlugin extends Plugin {
 	settings: IZendeskSettings = DEFAULT_SETTINGS;
@@ -49,6 +50,13 @@ export default class ZendeskTicketsPlugin extends Plugin {
 
 		// Slash commands
 		registerCommands(this);
+
+		// Obsidian URI protocol handler — lets agents invoke snapshots headlessly
+		// obsidian://zendesk-snapshot?vault=VAULT&type=user|organization|product|newLastWeek&value=XXX&target=path/to/note.md
+		this.registerObsidianProtocolHandler(
+			"zendesk-snapshot",
+			createZendeskSnapshotUriHandler(this)
+		);
 	}
 
 	async updateSettings(newSettings: IZendeskSettings): Promise<void> {

@@ -1,6 +1,6 @@
 import { Editor, Notice } from "obsidian";
 import type ZendeskTicketsPlugin from "../main";
-import { formatDate, formatDateTime } from "./snapshotHelper";
+import { runZendeskSnapshot } from "./snapshotCore";
 
 export function createSnapshotNewTicketsLastWeekCommand(
 	plugin: ZendeskTicketsPlugin,
@@ -16,32 +16,11 @@ export function createSnapshotNewTicketsLastWeekCommand(
 			}
 
 			try {
-				const now = new Date();
-				const sevenDaysAgo = new Date(
-					now.getFullYear(),
-					now.getMonth(),
-					now.getDate() - 7,
+				const { markdown } = await runZendeskSnapshot(
+					plugin,
+					"newLastWeek",
+					"",
 				);
-				const startDate = formatDate(sevenDaysAgo);
-				const endDate = formatDate(now);
-				const timestamp = formatDateTime(now);
-
-				const query = `type:ticket created>${startDate}`;
-				const response = await plugin.client.searchTickets(
-					account,
-					query,
-					100,
-				);
-
-				const markdown = [
-					`## New Tickets \u2014 ${startDate} ~ ${endDate}`,
-					"",
-					`**${response.count}** new tickets created in the past 7 days.`,
-					"",
-					`_Captured at ${timestamp}_`,
-					"",
-				].join("\n");
-
 				editor.replaceSelection(markdown);
 			} catch (err) {
 				new Notice(

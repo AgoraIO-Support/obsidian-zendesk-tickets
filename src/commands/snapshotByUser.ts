@@ -1,7 +1,7 @@
 import { Editor, Notice } from "obsidian";
 import type ZendeskTicketsPlugin from "../main";
 import { TextInputModal } from "./textInputModal";
-import { formatSnapshotTable } from "./snapshotHelper";
+import { runZendeskSnapshot } from "./snapshotCore";
 
 export function createSnapshotByUserCommand(plugin: ZendeskTicketsPlugin) {
 	return {
@@ -22,17 +22,10 @@ export function createSnapshotByUserCommand(plugin: ZendeskTicketsPlugin) {
 				"Enter username",
 				async (username: string) => {
 					try {
-						const query = `type:ticket status<solved assignee:${username}`;
-						const response = await plugin.client.searchTickets(
-							account,
-							query,
-							100,
-						);
-						const markdown = formatSnapshotTable(
-							`assignee: ${username}`,
-							response.results,
-							account,
-							new Date(),
+						const { markdown } = await runZendeskSnapshot(
+							plugin,
+							"user",
+							username,
 						);
 						editor.replaceSelection(markdown);
 					} catch (err) {
